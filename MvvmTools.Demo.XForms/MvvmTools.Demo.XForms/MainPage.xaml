@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MvvmTools.Demo.XForms"
+             xmlns:tools="clr-namespace:MvvmTools.XForms;assembly=MvvmTools.XForms"
+             x:Class="MvvmTools.Demo.XForms.MainPage"
+             x:Name="root">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+            </Style>
+            <Style TargetType="Switch">
+                <Setter Property="Margin" Value="5"/>
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="Margin" Value="5"/>
+            </Style>
+            <Style TargetType="Entry">
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+            </Style>
+            <local:CommandsCollection x:Key="CommandsCollection" AlwaysCanExecute="False">
+                <local:CommandSource Command="{Binding BindingContext.ExecCommand,Source={x:Reference root}}"/>
+                <local:CommandSource Command="{Binding BindingContext.ExecWithParameterCommand,Source={x:Reference root}}}"/>
+                <local:CommandSource Command="{Binding BindingContext.ExecWithParameterCommand,Source={x:Reference root}}}"
+                                     Parameter="This is a custom parameter command."
+                                     UseOwnParameter="True"/>
+            </local:CommandsCollection>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="Enable All Commands:"/>
+            <Switch IsToggled="{Binding EnableAllCommands}"/>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="Parameter:"/>
+            <Entry x:Name="Parameter" Text="Test"/>
+        </StackLayout>
+        <Button Text="Execute command without parameter"
+                Command="{Binding ExecCommand}"/>
+        <Button Text="Execute command with parameter:"
+                    Command="{Binding ExecWithParameterCommand}"
+                    CommandParameter="{Binding Text,Source={x:Reference Parameter}}"/>
+        <Button Text="Execute Multiple commands" Command="{StaticResource CommandsCollection}"
+                    CommandParameter="{Binding Text,Source={x:Reference Parameter}}"/>
+        <Button Text="Event bindings" tools:Events.Bindings="Clicked=Exec"/>
+        <Button Text="Event bindings with parameter" tools:Events.Bindings="Clicked=ExecWithParameter($Parameter.Text)"/>
+    </StackLayout>
+
+</ContentPage>
