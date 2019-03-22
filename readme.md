@@ -7,8 +7,8 @@ The main usage for this library is to help developer in creating commands in an 
 # 2.Platform Specific Library:
 The main part of this library is to enable direct binding between events in your views and methods in the view models directly from XAML code Like:
 ```XAML
-<Button Click="AcceptChanges(context)"/>
+<TextBox tools:Events.Bindings="LostFocus=Validate,GotFocus=Clear"/>
 ```
-
-
+This will create two events bindings.... one will call method `Validate` on `LostFocus` event, and one will call `Clear` when event `GotFocus` is fired....
+You can also pass single parameter to the method as Following: 
 
