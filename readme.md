@@ -11,4 +11,11 @@ The main part of this library is to enable direct binding between events in your
 ```
 This will create two events bindings.... one will call method `Validate` on `LostFocus` event, and one will call `Clear` when event `GotFocus` is fired....
 You can also pass single parameter to the method as Following: 
+```xaml
+<TextBox tools:Events.Bindings="LostFocus=Validate(context),GotFocus=Clear(sender)"/>
+```
+
+
+
+** PLEASE READ THE [WIKI](https://github.com/eiadxp/MvvmTools/wiki) FOR MORE INFORMATIONS **
 
