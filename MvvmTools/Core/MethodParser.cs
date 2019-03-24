@@ -72,8 +72,8 @@ namespace MvvmTools.Core
             if (i > Text.Length - 2) throw new InvalidOperationException("Can not find method name.");
             if (i < 1) //when no '.' is used that means the method name was used directly and it is in the data or binding context of UIElement.
             {
-                s = "context." + Text.Trim();
-                i += "context.".Length;
+                s = "@context." + Text.Trim();
+                i += "@context.".Length;
             }
             else
             {

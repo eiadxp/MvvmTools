@@ -55,6 +55,6 @@
         <Button Content="Execute method on mouse click and Leave {to attached collection}" 
                 tools:Events.Bindings="Click=Exec , MouseLeave=ExecWithParameter($Parameter.Text)"/>
         <Button Content="Execute method on mouse click from different data context {to attached collection}" DataContext="{x:Type Color}"
-                tools:Events.Bindings="Click=$root.DataContext.ExecWithParameter($Parameter.Text)"/>
+                tools:Events.Bindings="Click=$root.DataContext.ExecWithParameter(@this.Content)"/>
     </StackPanel>
 </Window>

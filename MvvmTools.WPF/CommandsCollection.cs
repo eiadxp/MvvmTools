@@ -7,7 +7,7 @@ using System.Windows.Markup;
 
 namespace MvvmTools.WPF
 {
-    public class CommandsCollection : MvvmTools.CommandsCollection
+    public class CommandsCollection : MvvmTools.Commands.CommandsCollection
     {
     }
 }

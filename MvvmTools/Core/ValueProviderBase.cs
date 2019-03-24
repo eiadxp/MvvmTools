@@ -105,24 +105,24 @@ namespace MvvmTools.Core
             int startIndex = 1;
             switch (_pathItems[0].ToLower())
             {
-                case "args":
+                case "@args":
                     if (isCommand) throw new InvalidOperationException("Can not use 'args' in commands.");
                     dataObject = args;
                     break;
-                case "sender":
+                case "@sender":
                     if (isCommand) throw new InvalidOperationException("Can not use 'sender' in commands.");
                     dataObject = sender;
                     break;
-                case "parameter":
+                case "@parameter":
                     if (!isCommand) throw new InvalidOperationException("Can not use 'parameter' in events.");
                     dataObject = sender;
                     break;
-                case "context":
-                case "datacontext":
-                case "bindingcontext":
+                case "@context":
+                case "@datacontext":
+                case "@bindingcontext":
                     dataObject = GetContext();
                     break;
-                case "this":
+                case "@this":
                     dataObject = UIElement;
                     break;
                 default:
