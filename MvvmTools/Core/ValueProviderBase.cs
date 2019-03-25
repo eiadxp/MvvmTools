@@ -106,23 +106,30 @@ namespace MvvmTools.Core
             switch (_pathItems[0].ToLower())
             {
                 case "@args":
+                case "!args":
                     if (isCommand) throw new InvalidOperationException("Can not use 'args' in commands.");
                     dataObject = args;
                     break;
                 case "@sender":
+                case "!sender":
                     if (isCommand) throw new InvalidOperationException("Can not use 'sender' in commands.");
                     dataObject = sender;
                     break;
                 case "@parameter":
+                case "!parameter":
                     if (!isCommand) throw new InvalidOperationException("Can not use 'parameter' in events.");
                     dataObject = sender;
                     break;
                 case "@context":
                 case "@datacontext":
                 case "@bindingcontext":
+                case "!context":
+                case "!datacontext":
+                case "!bindingcontext":
                     dataObject = GetContext();
                     break;
                 case "@this":
+                case "!this":
                     dataObject = UIElement;
                     break;
                 default:
@@ -133,6 +140,18 @@ namespace MvvmTools.Core
                     else if (_pathItems[0].StartsWith("#"))
                     {
                         dataObject = GetResource(_pathItems[0].Substring(1));
+                    }
+                    else if (_pathItems[0].StartsWith("!"))
+                    {
+                        try
+                        {
+                            dataObject = GetElement(_pathItems[0].Substring(1));
+                        }
+                        catch (Exception)
+                        {
+                            dataObject = null;
+                        }
+                        if (dataObject == null) dataObject = GetResource(_pathItems[0].Substring(1));
                     }
                     else
                     {
