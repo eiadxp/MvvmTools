@@ -2,6 +2,19 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <Authors>Clinical Office</Authors>
+    <Company>Clinical Office</Company>
+    <Description>A library to enable direct binding of events in your views and methods in the view models, also provide easy way of creating commands and commands collection.</Description>
+    <Copyright>Clinical Office @2019</Copyright>
+    <PackageTags>MVVM Tools XAML WPF Xamarin Forms XamarinForms XForms Command Commands Collection CommandCollection CommandsCollection CrossPlatform Caliburn Catel MvvmCross MvvmLight Mvvm-Light EventsBinding Events</PackageTags>
+    <PackageReleaseNotes>Initial release.</PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/eiadxp/MvvmTools</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/eiadxp/MvvmTools/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageId>ClinicalOffice.MvvmTools</PackageId>
+    <Version>1.0.0</Version>
+    <Product>MvvmTools</Product>
+    <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
 </Project>

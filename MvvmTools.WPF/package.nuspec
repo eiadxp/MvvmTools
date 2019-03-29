@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <!--*-->
+    <id>ClinicalOffice.MvvmTools.WPF</id>
+    <!--*-->
+    <version>1.0.0</version>
+    <title>MvvmTools.WPF</title>
+    <!--*-->
+    <authors>Clinical Office</authors>
+    <owners>eiadxp</owners>
+    <licenseUrl>https://github.com/eiadxp/MvvmTools/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/eiadxp/MvvmTools</projectUrl>
+    <!--<iconUrl>
+    </iconUrl>-->
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <!--*-->
+    <description>A library to enable direct binding of events in your views and methods in the view models, also provide easy way of creating commands and commands collection.</description>
+    <!--*-->
+    <releaseNotes> Initial release.</releaseNotes>
+    <copyright>Copyright ©  2019</copyright>
+    <tags> MVVM Tools XAML WPF Xamarin Forms XamarinForms XForms Command Commands Collection CommandCollection CommandsCollection CrossPlatform Caliburn Catel MvvmCross MvvmLight Mvvm-Light EventsBinding Events</tags>
+    <dependencies>
+      <dependency id="ClinicalOffice.MvvmTools" version="1.0.0" />
+    </dependencies>
+  </metadata>
+</package>

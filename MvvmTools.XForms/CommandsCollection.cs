@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MvvmTools.XForms
 {
-    public class CommandsCollection : MvvmTools.CommandsCollection
+    public class CommandsCollection : Commands.CommandsCollection
     {
     }
 }
