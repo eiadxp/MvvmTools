@@ -4,7 +4,7 @@
     <!--*-->
     <id>ClinicalOffice.MvvmTools.WPF</id>
     <!--*-->
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <title>MvvmTools.WPF</title>
     <!--*-->
     <authors>Clinical Office</authors>
@@ -17,7 +17,7 @@
     <!--*-->
     <description>A library to enable direct binding of events in your views and methods in the view models, also provide easy way of creating commands and commands collection.</description>
     <!--*-->
-    <releaseNotes> Initial release.</releaseNotes>
+    <releaseNotes> Fixed Issue: Can not find element by name from template items (Like ListBox).</releaseNotes>
     <copyright>Copyright ©  2019</copyright>
     <tags> MVVM Tools XAML WPF Xamarin Forms XamarinForms XForms Command Commands Collection CommandCollection CommandsCollection CrossPlatform Caliburn Catel MvvmCross MvvmLight Mvvm-Light EventsBinding Events</tags>
     <dependencies>

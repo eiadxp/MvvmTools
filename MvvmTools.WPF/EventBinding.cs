@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Media;
 using MvvmTools.Core;
 using MvvmTools.EventBinding;
 
@@ -16,7 +17,17 @@ namespace MvvmTools.WPF
         protected override object GetElement(string name)
         {
             var element = (UIElement as FrameworkElement) ?? throw new InvalidOperationException("Must be used on FrameworkElement");
-            return element.FindName(name); ;
+            return FindByName(name, element); ;
+        }
+        object FindByName(string name, FrameworkElement element)
+        {
+            if (element == null) return null;
+            var target = element.FindName(name);
+            if (target != null) return target;
+            if (element.Parent  is FrameworkElement parent) return FindByName(name, parent);
+            if (element.TemplatedParent is FrameworkElement templateParent) return FindByName(name, templateParent);
+            if (VisualTreeHelper.GetParent(element) is FrameworkElement visualParent) return FindByName(name, visualParent);
+            return null;
         }
         protected override object GetResource(string name)
         {
