@@ -15,7 +15,12 @@ namespace MvvmTools.XForms
         protected override object GetElement(string name)
         {
             var element = (UIElement as Element) ?? throw new InvalidOperationException("Must be used on Element");
-            return element.FindByName(name);
+            return FindByName(name, element);
+        }
+        object FindByName(string name, Element element)
+        {
+            if (element == null) return null;
+            return element.FindByName(name) ?? FindByName(name, element.Parent);
         }
         protected override object GetResource(string name)
         {
