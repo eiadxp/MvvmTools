@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:MvvmTools.Sample.XForms"
-             xmlns:vm="clr-namespace:Mvvm.Sample;assembly=Mvvm.Sample"
+             xmlns:vm="clr-namespace:MvvmTools.Sample;assembly=MvvmTools.Sample"
              xmlns:tools="clr-namespace:MvvmTools.XForms;assembly=MvvmTools.XForms"
              x:Name="root"
              x:Class="MvvmTools.Sample.XForms.MainPage">
@@ -17,9 +17,14 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <StackLayout Orientation="Horizontal" Padding="10">
-                            <Label Text="{Binding Name}" WidthRequest="200" VerticalTextAlignment="Center"/>
-                            <Button Text="Show id" tools:Events.Bindings="Clicked=!root.BindingContext.ShowModelId(!context)"/>
+                        <StackLayout Orientation="Horizontal" Margin="1" Padding="1" BackgroundColor="AliceBlue">
+                            <Label Text="{Binding Name}" Margin="20,0" TextColor="Black" WidthRequest="200" VerticalTextAlignment="Center"/>
+                            <Button Text="Show id" TextColor="Black" BackgroundColor="AntiqueWhite" 
+                                    tools:Events.Bindings="Clicked=!root.BindingContext.ShowModelId(!context)"/>
+                            <Button Text="Show Name"  TextColor="Black" BackgroundColor="AntiqueWhite" 
+                                    tools:Events.Bindings="Clicked=!root.BindingContext.ShowModelName(Model !context)"/>
+                            <Button Text="Show Name"  TextColor="Black" BackgroundColor="AntiqueWhite" 
+                                    tools:Events.Bindings="Clicked=!root.BindingContext.ShowModelName(Int32 !context.Id)"/>
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>

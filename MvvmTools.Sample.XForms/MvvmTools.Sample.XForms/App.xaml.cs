@@ -12,8 +12,7 @@ namespace MvvmTools.Sample.XForms
             InitializeComponent();
 
             MainPage = new MainPage();
-
-            Mvvm.Sample.ViewModel.ShowMessage = (o) => MainPage.DisplayAlert("Mvvm Tools", (o?.ToString()) ?? "Empty message", "Close");
+            ViewModel.ShowMessage = (o) => MainPage.DisplayAlert("Mvvm Tools", (o?.ToString()) ?? "Empty message", "Close");
         }
 
         protected override void OnStart()

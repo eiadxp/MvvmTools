@@ -16,6 +16,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\MvvmTools.XForms\MvvmTools.XForms.csproj" />
     <ProjectReference Include="..\..\MvvmTools\MvvmTools.csproj" />
-    <ProjectReference Include="..\..\Sample\Mvvm.Sample\Mvvm.Sample.csproj" />
+    <ProjectReference Include="..\..\Sample\Mvvm.Sample\MvvmTools.Sample.csproj" />
   </ItemGroup>
 </Project>

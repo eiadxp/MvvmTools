@@ -15,7 +15,7 @@ namespace MvvmTools.Sample.WPF
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            Mvvm.Sample.ViewModel.ShowMessage = (o) => MessageBox.Show((o?.ToString()) ?? "Empty message");
+            MvvmTools.Sample.ViewModel.ShowMessage = (o) => MessageBox.Show((o?.ToString()) ?? "Empty message");
             base.OnStartup(e);
         }
     }

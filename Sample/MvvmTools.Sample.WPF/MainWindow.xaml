@@ -6,12 +6,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MvvmTools.Sample.WPF"
         xmlns:tools="clr-namespace:MvvmTools.WPF;assembly=MvvmTools.WPF"
-        xmlns:vm="clr-namespace:Mvvm.Sample;assembly=Mvvm.Sample"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Window.DataContext>
-        <vm:ViewModel/>
-    </Window.DataContext>
     <StackPanel>
         <ToolBar>
             <Button Content="Show Count" tools:Events.Bindings="ShowModelsCount"/>
@@ -22,6 +18,8 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding Name}" Width="200" Margin="10"/>
                         <Button Content="Show id" tools:Events.Bindings="!root.DataContext.ShowModelId(!context)" Margin="10"/>
+                        <Button Content="Show Name" tools:Events.Bindings="!root.DataContext.ShowModelName(Model !context)" Margin="10"/>
+                        <Button Content="Show Name" tools:Events.Bindings="!root.DataContext.ShowModelName(Int32 !context.Id)" Margin="10"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

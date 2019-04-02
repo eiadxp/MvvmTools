@@ -103,9 +103,9 @@
       <Project>{fdf1aead-72bb-42cd-91a9-3afdedb90548}</Project>
       <Name>MvvmTools</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Mvvm.Sample\Mvvm.Sample.csproj">
+    <ProjectReference Include="..\Mvvm.Sample\MvvmTools.Sample.csproj">
       <Project>{ab7df728-3d60-4f65-ab20-29322d3f0227}</Project>
-      <Name>Mvvm.Sample</Name>
+      <Name>MvvmTools.Sample</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

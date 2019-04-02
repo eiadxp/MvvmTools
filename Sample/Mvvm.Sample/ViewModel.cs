@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Linq;
 
-namespace Mvvm.Sample
+namespace MvvmTools.Sample
 {
     public class ViewModel
     {
@@ -10,5 +11,7 @@ namespace Mvvm.Sample
 
         public void ShowModelsCount() => ShowMessage(Models?.Length);
         public void ShowModelId(Model model) => ShowMessage(model?.Id);
+        public void ShowModelName(Model model) => ShowMessage(model?.Name);
+        public void ShowModelName(int id) => ShowMessage(Models.FirstOrDefault(m => m.Id == id)?.Name);
     }
 }

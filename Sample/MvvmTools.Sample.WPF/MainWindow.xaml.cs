@@ -23,6 +23,7 @@ namespace MvvmTools.Sample.WPF
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new ViewModel();
         }
     }
 }

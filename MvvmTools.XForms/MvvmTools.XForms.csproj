@@ -10,10 +10,10 @@
     <PackageLicenseUrl>https://github.com/eiadxp/MvvmTools/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/eiadxp/MvvmTools</PackageProjectUrl>
     <PackageTags>MVVM Tools XAML WPF Xamarin Forms XamarinForms XForms Command Commands Collection CommandCollection CommandsCollection CrossPlatform Caliburn Catel MvvmCross MvvmLight Mvvm-Light EventsBinding Events</PackageTags>
-    <PackageReleaseNotes>Initial release.</PackageReleaseNotes>
+    <PackageReleaseNotes>Fix Issue: Can not find UI element by name.</PackageReleaseNotes>
     <Product>MvvmTools.XForms</Product>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 

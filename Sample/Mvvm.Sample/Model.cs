@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Mvvm.Sample
+namespace MvvmTools.Sample
 {
     public class Model
     {
