@@ -2,6 +2,7 @@
 using MvvmTools.EventBinding;
 using System;
 using Xamarin.Forms;
+using Xamarin.Forms.Internals;
 
 namespace MvvmTools.XForms
 {
@@ -20,8 +21,20 @@ namespace MvvmTools.XForms
         object FindByName(string name, Element element)
         {
             if (element == null) return null;
-            return element.FindByName(name) ?? FindByName(name, element.Parent);
+            return GetNameScope(element)?.FindByName(name) ?? FindByName(name, element.Parent);
         }
+        // Code taken from Xamarin.Forms source code.
+        INameScope GetNameScope(Element element)
+        {
+            do
+            {
+                var ns = NameScope.GetNameScope(element);
+                if (ns != null) return ns;
+            } while ((element = element.RealParent) != null);
+            return null;
+        }
+
+
         protected override object GetResource(string name)
         {
             var element = (UIElement as VisualElement) ?? throw new InvalidOperationException("Must be used on Element");
