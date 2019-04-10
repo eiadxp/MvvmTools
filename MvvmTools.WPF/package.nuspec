@@ -4,7 +4,7 @@
     <!--*-->
     <id>ClinicalOffice.MvvmTools.WPF</id>
     <!--*-->
-    <version>$version$</version>
+    <version>1.1.0</version>
     <title>MvvmTools.WPF</title>
     <!--*-->
     <authors>Clinical Office</authors>
@@ -21,7 +21,7 @@
     <copyright>Copyright ©  2019</copyright>
     <tags> MVVM Tools XAML WPF Xamarin Forms XamarinForms XForms Command Commands Collection CommandCollection CommandsCollection CrossPlatform Caliburn Catel MvvmCross MvvmLight Mvvm-Light EventsBinding Events</tags>
     <dependencies>
-      <dependency id="ClinicalOffice.MvvmTools" version="1.0.0" />
+      <dependency id="ClinicalOffice.MvvmTools" version="1.1.0" />
     </dependencies>
   </metadata>
 </package>
