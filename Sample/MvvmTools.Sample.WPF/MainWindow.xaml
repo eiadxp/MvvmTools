@@ -11,6 +11,7 @@
     <StackPanel>
         <ToolBar>
             <Button Content="Show Count" tools:Events.Bindings="ShowModelsCount"/>
+            <Button Content="Show Count (from command)" tools:Events.Bindings="ShowModelsCountCommand"/>
         </ToolBar>
         <ListBox x:Name="list" ItemsSource="{Binding Models}">
             <ListBox.ItemTemplate>
@@ -20,6 +21,7 @@
                         <Button Content="Show id" tools:Events.Bindings="!root.DataContext.ShowModelId(!context)" Margin="10"/>
                         <Button Content="Show Name" tools:Events.Bindings="!root.DataContext.ShowModelName(Model !context)" Margin="10"/>
                         <Button Content="Show Name" tools:Events.Bindings="!root.DataContext.ShowModelName(Int32 !context.Id)" Margin="10"/>
+                        <Button Content="Show id (from command)" tools:Events.Bindings="!root.DataContext.ShowModelIdCommand(!context)" Margin="10"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

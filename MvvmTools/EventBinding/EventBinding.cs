@@ -10,9 +10,13 @@ namespace MvvmTools.EventBinding
     public class EventBinding<TValueProvider> where TValueProvider : ValueProviderBase, new()
     {
         #region Constructors
-        public EventBinding() { }
+        public EventBinding()
+        {
+            this.LogWrite("EventBinding created with default constructor.");
+        }
         public EventBinding(object eventSource, string eventString)
         {
+            this.LogWrite("EventBinding created with (object, string) constructor.");
             EventSource = eventSource;
             EventSrting = eventString;
         }
@@ -33,7 +37,12 @@ namespace MvvmTools.EventBinding
         T SetIfNotSubscribed<T>(T value, [CallerMemberName] string property = "")
         {
             if (IsSubscribed)
+            {
+                this.LogWrite("SetIfNotSubscribed failed.");
                 throw new InvalidOperationException($"Can not change property '{property}' while you are subscribed to the event./nPlease remove the event handler first.");
+            }
+
+            this.LogWrite("SetIfNotSubscribed passed.");
             return value;
         }
         #endregion
@@ -70,9 +79,25 @@ namespace MvvmTools.EventBinding
         Delegate subscribedDelegate;
         internal bool SubscribeToEvent()
         {
-            if (Handler != null || IsSubscribed) return false;
-            if (string.IsNullOrWhiteSpace(EventSrting)) return false;
-            if (EventSource == null) return false;
+            this.LogWrite($"'{nameof(SubscribeToEvent)}' called.");
+            if (Handler != null || IsSubscribed)
+            {
+                this.LogWrite($"'{nameof(SubscribeToEvent)}' canceled (already subscribed).");
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(EventSrting))
+            {
+                this.LogWrite($"'{nameof(SubscribeToEvent)}' canceled (Empty event string).");
+                return false;
+            }
+
+            if (EventSource == null)
+            {
+                this.LogWrite($"'{nameof(SubscribeToEvent)}' canceled (Null event source).");
+                return false;
+            }
+
             var i = EventSrting.IndexOf('=');
             var eventName = (i > 0) ? EventSrting.Substring(0, i).Trim() : "";
             subscribedEvent = ReflectionCash.GetEventOrDefault(EventSource.GetType(), eventName) ?? throw new InvalidOperationException("Can not find event.");
@@ -81,6 +106,7 @@ namespace MvvmTools.EventBinding
             subscribedDelegate = CreateEventHandler(subscribedEvent.EventHandlerType, this);
             subscribedEvent.AddEventHandler(EventSource, subscribedDelegate);
             IsSubscribed = true;
+            this.LogWrite($"'{nameof(SubscribeToEvent)}' passed.");
             return true;
         }
         internal bool UnubscribeFromEvent()

@@ -1,4 +1,5 @@
-﻿using MvvmTools.Core;
+﻿using MvvmTools;
+using MvvmTools.Core;
 using MvvmTools.EventBinding;
 using System;
 using Xamarin.Forms;
@@ -56,7 +57,22 @@ namespace MvvmTools.XForms
     [TypeConverter(typeof(EventBindingsCollectionConverter))]
     public class EventBindingsCollection : EventBindingCollectionBase<ValueProvider>
     {
-
+        protected override void Initialize()
+        {
+            base.Initialize();
+            Configurations.Reflaction.SetDefaultEvent(typeof(Button), nameof(Button.Clicked));
+            Configurations.Reflaction.SetDefaultEvent(typeof(WebView), nameof(WebView.Navigated));
+            Configurations.Reflaction.SetDefaultEvent(typeof(SearchBar), nameof(SearchBar.SearchButtonPressed));
+            Configurations.Reflaction.SetDefaultEvent(typeof(Slider), nameof(Slider.ValueChanged));
+            Configurations.Reflaction.SetDefaultEvent(typeof(Stepper), nameof(Stepper.ValueChanged));
+            Configurations.Reflaction.SetDefaultEvent(typeof(Switch), nameof(Switch.Toggled));
+            Configurations.Reflaction.SetDefaultEvent(typeof(DatePicker), nameof(DatePicker.DateSelected));
+            Configurations.Reflaction.SetDefaultEvent(typeof(TimePicker), nameof(TimePicker.PropertyChanged));
+            Configurations.Reflaction.SetDefaultEvent(typeof(Entry), nameof(Entry.Completed));
+            Configurations.Reflaction.SetDefaultEvent(typeof(Editor), nameof(Editor.Completed));
+            Configurations.Reflaction.SetDefaultEvent(typeof(ListView), nameof(ListView.ItemSelected));
+            Configurations.Reflaction.SetDefaultEvent(typeof(Picker), nameof(Picker.SelectedIndexChanged));
+        }
     }
     public class EventBindingsCollectionConverter : EventBindingCollectionConverterBase<EventBindingsCollection>
     {

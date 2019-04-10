@@ -13,6 +13,7 @@ namespace MvvmTools.Core
         }
         TValueProvider _parameter = null;
         TValueProvider _methodSource = null;
+        // _methodName may refaer also to a property of type ICommand.
         string _methodName = "";
         Type _parameterType = null;
 
@@ -27,12 +28,12 @@ namespace MvvmTools.Core
             if (source == null) return;
             if (_parameter == null)
             {
-                ReflectionCash.ExecuteMethod(source, _methodName);
+                ReflectionCash.ExecuteCommandOrMethod(source, _methodName);
             }
             else
             {
                 var parameter = _parameter.GetValueFromEvent(sender, args);
-                ReflectionCash.ExecuteMethod(source, _methodName, parameter, _parameterType);
+                ReflectionCash.ExecuteCommandOrMethod(source, _methodName, parameter, _parameterType);
             }
         }
         public void ExecuteFromCommand(object commandParameter)
@@ -69,7 +70,7 @@ namespace MvvmTools.Core
             int i = Text.IndexOf('(');
             i = i < 1 ? Text.LastIndexOf('.') : Text.LastIndexOf('.', i - 1);
             //i = Text.LastIndexOf(".");
-            if (i > Text.Length - 2) throw new InvalidOperationException("Can not find method name.");
+            if (i > Text.Length - 2) throw new InvalidOperationException("Can not find method or command property name.");
             if (i < 1) //when no '.' is used that means the method name was used directly and it is in the data or binding context of UIElement.
             {
                 s = "@context." + Text.Trim();

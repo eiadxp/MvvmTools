@@ -12,6 +12,7 @@
     <StackLayout>
         <StackLayout Orientation="Horizontal">
             <Button Text="Show Count" tools:Events.Bindings="ShowModelsCount"/>
+            <Button Text="Show Count (from command)" tools:Events.Bindings="ShowModelsCountCommand"/>
         </StackLayout>
         <ListView ItemsSource="{Binding Models}">
             <ListView.ItemTemplate>
@@ -24,7 +25,9 @@
                             <Button Text="Show Name"  TextColor="Black" BackgroundColor="AntiqueWhite" 
                                     tools:Events.Bindings="Clicked=!root.BindingContext.ShowModelName(Model !context)"/>
                             <Button Text="Show Name"  TextColor="Black" BackgroundColor="AntiqueWhite" 
-                                    tools:Events.Bindings="Clicked=!root.BindingContext.ShowModelName(Int32 !context.Id)"/>
+                                    tools:Events.Bindings="!root.BindingContext.ShowModelName(Int32 !context.Id)"/>
+                            <Button Text="Show id (from command)" TextColor="Black" BackgroundColor="AntiqueWhite" 
+                                    tools:Events.Bindings="Clicked=!root.BindingContext.ShowModelIdCommand(!context)"/>
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>

@@ -6,8 +6,19 @@ namespace MvvmTools.EventBinding
     public class EventBindingCollectionBase<TValueProvider> : Collection<EventBinding<TValueProvider>> , IAddFromString
         where TValueProvider : ValueProviderBase , new ()
     {
-        private object _eventSource;
+        static bool IsInit;
 
+        public EventBindingCollectionBase()
+        {
+            if (!IsInit)
+            {
+                Initialize();
+                IsInit = true;
+            }
+        } 
+        protected virtual void Initialize() { }
+
+        private object _eventSource;
         public object EventSource
         {
             get { return _eventSource; }
@@ -31,7 +42,7 @@ namespace MvvmTools.EventBinding
                 }
             }
         }
-
+        #region Collection
         protected override void ClearItems()
         {
             if (EventSource != null)
@@ -80,6 +91,7 @@ namespace MvvmTools.EventBinding
                 base.SetItem(index, item);
             }
         }
+        #endregion
 
         public void AddFromString(string text) => Add(new EventBinding<TValueProvider>(null, text));
         public void AddRangeFromString(string text)

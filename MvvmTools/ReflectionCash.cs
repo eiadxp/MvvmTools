@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Windows.Input;
 
 namespace MvvmTools
 {
@@ -27,6 +28,16 @@ namespace MvvmTools
             }
             return null;
         }
+        public static void ExecuteCommandOrMethod(object source, string name)
+        {
+            source = source ?? throw new NullReferenceException("Method source can not be null.");
+            if (!ExecuteCommand(source, name)) ExecuteMethod(source, name);
+        }
+        public static void ExecuteCommandOrMethod(object source, string name, object parameter, Type parameterType = null)
+        {
+            source = source ?? throw new NullReferenceException("Method source can not be null.");
+            if (!ExecuteCommand(source, name, parameter)) ExecuteMethod(source, name, parameter, parameterType);
+        }
         #region Events
         static Dictionary<Type, EventInfo[]> _Events = new Dictionary<Type, EventInfo[]>();
         static Dictionary<Type, EventInfo> _DefaultEvent = new Dictionary<Type, EventInfo>();
@@ -36,15 +47,48 @@ namespace MvvmTools
         {
             var e = _DefaultEvent.GetValue(eventSource, () =>
             {
-                var a = eventSource.GetCustomAttribute<System.ComponentModel.DefaultEventAttribute>();
-                if (a == null) return ReflectionCash.GetEvents(eventSource).FirstOrDefault();
-                return ReflectionCash.GetEvents(eventSource).FirstOrDefault(ee => ee.Name == a.Name);
+                var a = eventSource.GetCustomAttribute<System.ComponentModel.DefaultEventAttribute>()
+                        ?? throw new InvalidOperationException($"Type {eventSource.Name} does not own a default event.");
+                return ReflectionCash.GetEvent(eventSource, a.Name);
             });
             if (e == null) e = GetEvents(eventSource).FirstOrDefault();
             return e;
         }
+        public static void SetDefaultEvent(Type eventSource, string eventName)
+        {
+            if (eventSource == null)
+            {
+                throw new ArgumentNullException(nameof(eventSource));
+            }
+
+            if (string.IsNullOrWhiteSpace(eventName))
+            {
+                throw new ArgumentNullException(nameof(eventName));
+            }
+            var eventInfo = eventSource.GetEvent(eventName) 
+                            ?? throw new InvalidOperationException($"Can not find event {eventName} in type of {eventSource.Name}.");
+            _DefaultEvent[eventSource] = eventInfo;
+        }
+        public static void ClearDefaultEvent(Type eventSource)
+        {
+            if (eventSource == null)
+            {
+                throw new ArgumentNullException(nameof(eventSource));
+            }
+
+            _DefaultEvent.Remove(eventSource);
+        }
+        public static void ClearDefaultEvents()
+        {
+            _DefaultEvent.Clear();
+        }
         public static EventInfo GetEventOrDefault(Type eventSource, string eventName)
         {
+            if (eventSource == null)
+            {
+                throw new ArgumentNullException(nameof(eventSource));
+            }
+
             return string.IsNullOrWhiteSpace(eventName)
                 ? GetDefaultEvent(eventSource)
                 : GetEvents(eventSource).SingleOrDefault(e => e.Name == eventName);
@@ -137,13 +181,40 @@ namespace MvvmTools
         #endregion
         #region Properties
         static Dictionary<Type, PropertyInfo[]> _Properties = new Dictionary<Type, PropertyInfo[]>();
+        static PropertyInfo[] GetProperties(Type type) => _Properties.GetValue(type, () => type.GetProperties());
         public static object GetPropertyValue(object obj, string propertyName)
         {
             if (obj == null) throw new ArgumentNullException(nameof(obj));
             var type = obj.GetType();
-            var property = _Properties.GetValue(type, () => type.GetProperties()).SingleOrDefault(p => p.Name == propertyName);
+            var property = GetProperties(type).SingleOrDefault(p => p.Name == propertyName);
             if (property == null) throw new InvalidOperationException($"Can not find property '{propertyName}' in type '{type.Name}'.");
             return property.GetValue(obj);
+        }
+        #endregion
+        #region Commands
+        static Dictionary<Type, PropertyInfo[]> _Commands = new Dictionary<Type, PropertyInfo[]>();
+        static PropertyInfo GetCommandProperty(object commandSource, string commandName)
+        {
+            var commands = _Commands.GetValue(commandSource.GetType(), 
+                                               () => GetProperties(commandSource.GetType()).Where
+                                                        (p => p.PropertyType.IsAssignableFrom(typeof(ICommand))).ToArray());
+            return commands.FirstOrDefault(p => p.Name == commandName);
+        }
+        static bool ExecuteCommand(object commandSource, string commandName)
+        {
+            var p = GetCommandProperty(commandSource, commandName);
+            if (p == null) return false;
+            var command = GetPropertyValue(commandSource, commandName) as ICommand;
+            if (command.CanExecute(null)) command.Execute(null);
+            return true;
+        }
+        static bool ExecuteCommand(object commandSource, string commandName, object parameter)
+        {
+            var p = GetCommandProperty(commandSource, commandName);
+            if (p == null) return false;
+            var command = GetPropertyValue(commandSource, commandName) as ICommand;
+            if (command.CanExecute(parameter)) command.Execute(parameter);
+            return true;
         }
         #endregion
     }
