@@ -15,6 +15,10 @@ You can also pass single parameter to the method as Following:
 <TextBox tools:Events.Bindings="LostFocus=Validate(!context),GotFocus=Clear(!sender)"/>
 ```
 
+You can also use commands in the same way as methods and bind them to any event:
+```xaml
+<TextBox tools:Events.Bindings="LostFocus=ValidateCommand(!context),GotFocus=ClearCommand(!sender)"/>
+```
 
 
 ** PLEASE READ THE [WIKI](https://github.com/eiadxp/MvvmTools/wiki) FOR MORE INFORMATIONS **
