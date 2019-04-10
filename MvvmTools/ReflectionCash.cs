@@ -54,6 +54,7 @@ namespace MvvmTools
             if (e == null) e = GetEvents(eventSource).FirstOrDefault();
             return e;
         }
+        public static bool HasDefaultEvent(Type eventSource) => _DefaultEvent.ContainsKey(eventSource);
         public static void SetDefaultEvent(Type eventSource, string eventName)
         {
             if (eventSource == null)
@@ -68,6 +69,23 @@ namespace MvvmTools
             var eventInfo = eventSource.GetEvent(eventName) 
                             ?? throw new InvalidOperationException($"Can not find event {eventName} in type of {eventSource.Name}.");
             _DefaultEvent[eventSource] = eventInfo;
+        }
+        public static bool SetDefaultEventIfNotExist(Type eventSource, string eventName)
+        {
+            if (eventSource == null)
+            {
+                throw new ArgumentNullException(nameof(eventSource));
+            }
+
+            if (string.IsNullOrWhiteSpace(eventName))
+            {
+                throw new ArgumentNullException(nameof(eventName));
+            }
+            if (HasDefaultEvent(eventSource)) return false;
+            var eventInfo = eventSource.GetEvent(eventName) 
+                            ?? throw new InvalidOperationException($"Can not find event {eventName} in type of {eventSource.Name}.");
+            _DefaultEvent[eventSource] = eventInfo;
+            return true;
         }
         public static void ClearDefaultEvent(Type eventSource)
         {

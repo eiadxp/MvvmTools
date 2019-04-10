@@ -60,18 +60,18 @@ namespace MvvmTools.XForms
         protected override void Initialize()
         {
             base.Initialize();
-            Configurations.Reflaction.SetDefaultEvent(typeof(Button), nameof(Button.Clicked));
-            Configurations.Reflaction.SetDefaultEvent(typeof(WebView), nameof(WebView.Navigated));
-            Configurations.Reflaction.SetDefaultEvent(typeof(SearchBar), nameof(SearchBar.SearchButtonPressed));
-            Configurations.Reflaction.SetDefaultEvent(typeof(Slider), nameof(Slider.ValueChanged));
-            Configurations.Reflaction.SetDefaultEvent(typeof(Stepper), nameof(Stepper.ValueChanged));
-            Configurations.Reflaction.SetDefaultEvent(typeof(Switch), nameof(Switch.Toggled));
-            Configurations.Reflaction.SetDefaultEvent(typeof(DatePicker), nameof(DatePicker.DateSelected));
-            Configurations.Reflaction.SetDefaultEvent(typeof(TimePicker), nameof(TimePicker.PropertyChanged));
-            Configurations.Reflaction.SetDefaultEvent(typeof(Entry), nameof(Entry.Completed));
-            Configurations.Reflaction.SetDefaultEvent(typeof(Editor), nameof(Editor.Completed));
-            Configurations.Reflaction.SetDefaultEvent(typeof(ListView), nameof(ListView.ItemSelected));
-            Configurations.Reflaction.SetDefaultEvent(typeof(Picker), nameof(Picker.SelectedIndexChanged));
+            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(Button), nameof(Button.Clicked));
+            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(WebView), nameof(WebView.Navigated));
+            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(SearchBar), nameof(SearchBar.SearchButtonPressed));
+            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(Slider), nameof(Slider.ValueChanged));
+            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(Stepper), nameof(Stepper.ValueChanged));
+            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(Switch), nameof(Switch.Toggled));
+            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(DatePicker), nameof(DatePicker.DateSelected));
+            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(TimePicker), nameof(TimePicker.PropertyChanged));
+            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(Entry), nameof(Entry.Completed));
+            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(Editor), nameof(Editor.Completed));
+            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(ListView), nameof(ListView.ItemSelected));
+            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(Picker), nameof(Picker.SelectedIndexChanged));
         }
     }
     public class EventBindingsCollectionConverter : EventBindingCollectionConverterBase<EventBindingsCollection>
