@@ -10,11 +10,12 @@
     <PackageLicenseUrl>https://github.com/eiadxp/MvvmTools/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/eiadxp/MvvmTools</PackageProjectUrl>
     <PackageTags>MVVM Tools XAML WPF Xamarin Forms XamarinForms XForms Command Commands Collection CommandCollection CommandsCollection CrossPlatform Caliburn Catel MvvmCross MvvmLight Mvvm-Light EventsBinding Events</PackageTags>
-    <PackageReleaseNotes>Added: Support of binding events to commands.</PackageReleaseNotes>
+    <PackageReleaseNotes>Enhance default events editing</PackageReleaseNotes>
     <Product>MvvmTools.XForms</Product>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+    <AssemblyVersion>1.1.1.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
