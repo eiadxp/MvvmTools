@@ -13,9 +13,11 @@ namespace MvvmTools.Demo
             if (Equals(field, newValue)) return false;
             field = newValue;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+            (ExecWithParameterAndConditionCommand as Commands.ICommandNotify)?.NotifyCanExecuteChanged();
             return true;
         }
         readonly Action<string> ShowMessage;
+        public DemoClass() : this(null) { }
         public DemoClass(Action<string> showMessage = null)
         {
             ShowMessage = showMessage ?? (s => System.Diagnostics.Debug.WriteLine(s));
@@ -25,8 +27,10 @@ namespace MvvmTools.Demo
 
         void CreateCommands()
         {
+            _Parameter = "Test";
             ExecCommand = Command.Create(Exec, nameof(CanExec), this);
             ExecWithParameterCommand = this.CreateCommand<string>(ExecWithParameter, nameof(CanExecWithParameter));
+            ExecWithParameterAndConditionCommand = this.CreateCommand<string>(ExecWithParameterAndCondition, nameof(CanExecWithParameterAndCondition));
         }
 
         bool _EnableAllCommands;
@@ -41,6 +45,10 @@ namespace MvvmTools.Demo
             }
         }
 
+        private string _Parameter;
+        public string Parameter { get => _Parameter; set => Set(ref _Parameter, value); }
+
+
         public void Exec() => ShowMessage("This is a parameterless function.");
         bool _CanExec;
         public bool CanExec { get => _CanExec; set => Set(ref _CanExec, value); }
@@ -50,5 +58,9 @@ namespace MvvmTools.Demo
         bool _CanExecWithParameter;
         public bool CanExecWithParameter { get => _CanExecWithParameter; set => Set(ref _CanExecWithParameter, value); }
         public ICommand ExecWithParameterCommand { get; set; }
+
+        public void ExecWithParameterAndCondition(string parameter) => ShowMessage("This is a parameter function that execute if parameter value is:\n\n" + parameter);
+        public bool CanExecWithParameterAndCondition(string parameter) => parameter == "mvvmtools";
+        public ICommand ExecWithParameterAndConditionCommand { get; set; }
     }
 }

@@ -59,7 +59,7 @@ namespace MvvmTools.Core
         /// Searches for UI element by name is done usually by using <see cref="UIElement"/>, but in some cases this methods is called 
         /// before defining <see cref="UIElement"/>, or before attaching it to the UI parent, in that case it must return null.
         /// </remarks>
-        protected abstract object GetElement(string name);
+        internal protected abstract object GetElement(string name);
         /// <summary>
         /// Get a resource by key.
         /// </summary>
@@ -69,13 +69,13 @@ namespace MvvmTools.Core
         /// Searches for UI resources by key is done usually by using <see cref="UIElement"/>, but in some cases this methods is called 
         /// before defining <see cref="UIElement"/>, or before attaching it to the UI parent, in that case it must return null.
         /// </remarks>
-        protected abstract object GetResource(string Key);
+        internal protected abstract object GetResource(string Key);
         /// <summary>
         /// Gets the data (or binding) context of th <see cref="UIElement"/>.
         /// </summary>
         /// <returns>The data (or binding) context of <see cref="UIElement"/> if it is set, other wise it will returns null.</returns>
         /// <remarks>If <see cref="UIElement"/> is null, this method should return null.</remarks>
-        protected abstract object GetContext();
+        internal protected abstract object GetContext(object element);
 
         /// <summary>
         /// UI element to be used with this object.
@@ -103,6 +103,7 @@ namespace MvvmTools.Core
             if (_pathItems.Length == 0) return null;
             object dataObject;
             int startIndex = 1;
+            bool isElementName = false;
             switch (_pathItems[0].ToLower())
             {
                 case "@args":
@@ -126,7 +127,7 @@ namespace MvvmTools.Core
                 case "!context":
                 case "!datacontext":
                 case "!bindingcontext":
-                    dataObject = GetContext();
+                    dataObject = GetContext(UIElement);
                     break;
                 case "@this":
                 case "!this":
@@ -136,6 +137,7 @@ namespace MvvmTools.Core
                     if (_pathItems[0].StartsWith("$"))
                     {
                         dataObject = GetElement(_pathItems[0].Substring(1));
+                        isElementName = true;
                     }
                     else if (_pathItems[0].StartsWith("#"))
                     {
@@ -146,6 +148,7 @@ namespace MvvmTools.Core
                         try
                         {
                             dataObject = GetElement(_pathItems[0].Substring(1));
+                            isElementName = dataObject!= null;
                         }
                         catch (Exception)
                         {
@@ -155,16 +158,33 @@ namespace MvvmTools.Core
                     }
                     else
                     {
-                        dataObject = GetContext();
+                        dataObject = GetContext(UIElement);
                         startIndex = 0;
                     }
 
                     break;
             }
-            for (startIndex = 1; startIndex < _pathItems.Length; startIndex++)
+            for (int i = startIndex; i < _pathItems.Length; i++)
             {
                 if (dataObject == null) break;
-                dataObject = ReflectionCash.GetPropertyValue(dataObject, _pathItems[startIndex]);
+                try
+                {
+                    dataObject = ReflectionCash.GetPropertyValue(dataObject, _pathItems[i]);
+                    isElementName = false;
+                }
+                catch (Exception)
+                {
+                    if (isElementName)
+                    {
+                        dataObject = GetContext(dataObject);
+                        isElementName = false;
+                        dataObject = ReflectionCash.GetPropertyValue(dataObject, _pathItems[i]);
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
             }
             return dataObject;
         }

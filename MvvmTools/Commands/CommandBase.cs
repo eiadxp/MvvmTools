@@ -1,12 +1,13 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Windows.Input;
 
 namespace MvvmTools.Commands
 {
     /// <summary>
     /// The base class of all commands in this package.
     /// </summary>
-    public abstract class CommandBase : ICommandNotify
+    public abstract class CommandBase : ICommandNotify, ICommand
     {
         /// <summary>
         /// Occurs when changes occur that affect whether or not the command should execute.
@@ -14,7 +15,7 @@ namespace MvvmTools.Commands
         public event EventHandler CanExecuteChanged;
         /// <summary>
         /// Defines the method that determines whether the command can execute in its current state.
-        /// </summary>C:\Users\Eiad Al-Khanshour\source\repos\ClinicalOffice.Commands\ClinicalOffice.Commands\Core\CommandBase.cs
+        /// </summary>
         /// <param name="parameter">Data used by the command. If the command does not require data to be passed, this object can be set to <c>null</c>.</param>
         /// <returns><c>true</c> if this command can be executed; otherwise, <c>false</c>.</returns>
         public abstract bool CanExecute(object parameter);

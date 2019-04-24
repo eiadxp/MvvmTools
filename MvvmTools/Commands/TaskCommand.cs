@@ -18,7 +18,7 @@ namespace MvvmTools.Commands
     /// interface (Defined in <see cref="Extensions"/> class).
     /// </para>
     /// </remarks>
-    public class TaskCommand : CommandBase
+    public class TaskCommand : CommandBase, ICommand
     {
         /// <summary>
         /// Determine weather the task returned from async method will be started automatically when <see cref="execute"/> is called.

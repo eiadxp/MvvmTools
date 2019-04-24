@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MvvmTools.Demo.WPF"
         xmlns:tools="clr-namespace:MvvmTools.WPF;assembly=MvvmTools.WPF"
-        mc:Ignorable="d" Name="root"
-        Title="MainWindow" Height="458.831" Width="539.29">
+        xmlns:vm="clr-namespace:MvvmTools.Demo;assembly=MvvmTools.Demo"
+        mc:Ignorable="d" Name="root" d:DataContext="{d:DesignInstance Type=vm:DemoClass}"
+        Title="MainWindow" Height="458.831">
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="Margin" Value="5"/>
@@ -37,13 +38,16 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Parameter:"/>
-            <TextBox Name="Parameter" Grid.Column="1" Text="Test" />
+            <TextBlock Text="Parameter:" />
+            <TextBox Name="Parameter" Grid.Column="1" Text="{Binding Parameter,UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
         <Button Content="Execute command without parameter" Command="{Binding ExecCommand}"/>
         <Button Content="Execute command with parameter" 
                 Command="{Binding ExecWithParameterCommand}"
                 CommandParameter="{Binding Text,Source={x:Reference Parameter}}"/>
+        <Button Content="Execute command with parameter that can be executed only if parameter is: mvvmtools" 
+                Command="{Binding ExecWithParameterAndConditionCommand}"
+                CommandParameter="{Binding Parameter}"/>
         <Button Content="Execute Multiple commands" 
                 Command="{StaticResource CommandCollection}"
                 CommandParameter="{Binding Text,Source={x:Reference Parameter}}">
@@ -55,6 +59,6 @@
         <Button Content="Execute method on mouse click and Leave {to attached collection}" 
                 tools:Events.Bindings="Click=Exec , MouseLeave=ExecWithParameter($Parameter.Text)"/>
         <Button Content="Execute method on mouse click from different data context {to attached collection}" DataContext="{x:Type Color}"
-                tools:Events.Bindings="Click=$root.DataContext.ExecWithParameter(@this.Content)"/>
+                tools:Events.Bindings="Click=$root.ExecWithParameter(@this.Content)"/>
     </StackPanel>
 </Window>

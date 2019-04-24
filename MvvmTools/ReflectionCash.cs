@@ -121,6 +121,7 @@ namespace MvvmTools
         static Dictionary<Type, MethodInfo[]> _Methods = new Dictionary<Type, MethodInfo[]>();
         static Dictionary<MethodInfo, ParameterInfo[]> _MethodParameters = new Dictionary<MethodInfo, ParameterInfo[]>();
         public static MethodInfo[] GetMethods(Type type) => _Methods.GetValue(type, () => type.GetMethods());
+        public static bool HasMethod(Type type, string methodName) => _Methods.GetValue(type, () => type.GetMethods()).Any(m => m.Name == methodName);
         public static ParameterInfo[] GetMethodParameters(MethodInfo method) => _MethodParameters.GetValue(method, () => method.GetParameters());
         public static void ExecuteMethod(object methodSource, string methodName)
         {
@@ -169,7 +170,7 @@ namespace MvvmTools
             var item = methods.SingleOrDefault(m => GetMethodParameters(m)[0].ParameterType.IsAssignableFrom(parameterType));
             item = item ?? methods.SingleOrDefault(m => GetMethodParameters(m)[0].ParameterType == typeof(object));
             item = item ?? methods.FirstOrDefault();
-            if (item == null) throw new InvalidOperationException($"Can not find method {method} with single parameter.");
+            if (item == null) throw new InvalidOperationException($"Can not find method {method} with single parameter in type {type.Name}.");
             return item;
         }
         public static Action<object, object> GetDelegateWithParameter(MethodInfo method)

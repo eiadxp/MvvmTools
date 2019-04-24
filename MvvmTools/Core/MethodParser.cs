@@ -13,7 +13,7 @@ namespace MvvmTools.Core
         }
         TValueProvider _parameter = null;
         TValueProvider _methodSource = null;
-        // _methodName may refaer also to a property of type ICommand.
+        // _methodName may refer also to a property of type ICommand.
         string _methodName = "";
         Type _parameterType = null;
 
@@ -26,6 +26,8 @@ namespace MvvmTools.Core
         {
             var source = GetMethodObject(sender, args);
             if (source == null) return;
+            if (!ReflectionCash.HasMethod(source.GetType(), _methodName))
+                source = _methodSource.GetContext(source);
             if (_parameter == null)
             {
                 ReflectionCash.ExecuteCommandOrMethod(source, _methodName);
@@ -40,6 +42,8 @@ namespace MvvmTools.Core
         {
             var source = GetMethodObject(commandParameter);
             if (source == null) return;
+            if (!ReflectionCash.HasMethod(source.GetType(), _methodName))
+                source = _methodSource.GetContext(source);
             if (_parameter == null)
             {
                 ReflectionCash.ExecuteMethod(source, _methodName);

@@ -37,13 +37,16 @@
         </StackLayout>
         <StackLayout Orientation="Horizontal">
             <Label Text="Parameter:"/>
-            <Entry x:Name="Parameter" Text="Test"/>
+            <Entry x:Name="Parameter" Text="{Binding Parameter}"/>
         </StackLayout>
         <Button Text="Execute command without parameter"
                 Command="{Binding ExecCommand}"/>
         <Button Text="Execute command with parameter:"
                     Command="{Binding ExecWithParameterCommand}"
                     CommandParameter="{Binding Text,Source={x:Reference Parameter}}"/>
+        <Button Text="Execute command with parameter that can be executed only if parameter is: mvvmtools" 
+                Command="{Binding ExecWithParameterAndConditionCommand}"
+                CommandParameter="{Binding Parameter}"/>
         <Button Text="Execute Multiple commands" Command="{StaticResource CommandsCollection}"
                     CommandParameter="{Binding Text,Source={x:Reference Parameter}}"/>
         <Button Text="Event bindings" tools:Events.Bindings="Clicked=Exec"/>

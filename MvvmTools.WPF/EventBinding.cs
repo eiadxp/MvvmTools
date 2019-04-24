@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Markup;
 using System.Windows.Media;
 using MvvmTools.Core;
 using MvvmTools.EventBinding;
@@ -9,10 +11,10 @@ namespace MvvmTools.WPF
 {
     public class ValueProvider : ValueProviderBase
     {
-        protected override object GetContext()
+        protected override object GetContext(object element)
         {
-            var element = (UIElement as FrameworkElement) ?? throw new InvalidOperationException("Must be used on FrameworkElement");
-            return element.DataContext;
+            var frameworkElement = (element as FrameworkElement) ?? throw new InvalidOperationException("Must be used on FrameworkElement");
+            return frameworkElement.DataContext;
         }
         protected override object GetElement(string name)
         {

@@ -9,10 +9,10 @@ namespace MvvmTools.XForms
 {
     public class ValueProvider : ValueProviderBase
     {
-        protected override object GetContext()
+        protected override object GetContext(object element)
         {
-            var element = (UIElement as BindableObject) ?? throw new InvalidOperationException("Must be used on BindableObject");
-            return element.BindingContext;
+            var bindable = (UIElement as BindableObject) ?? throw new InvalidOperationException("Must be used on BindableObject");
+            return bindable.BindingContext;
         }
         protected override object GetElement(string name)
         {

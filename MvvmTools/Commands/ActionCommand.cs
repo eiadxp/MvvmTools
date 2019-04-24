@@ -17,7 +17,7 @@ namespace MvvmTools.Commands
     /// interface (Defined in <see cref="Extensions"/> class).
     /// </para>
     /// </remarks>
-    public class ActionCommand : CommandBase
+    public class ActionCommand : CommandBase, ICommand
     {
         /// <summary>
         /// Defines the method that determines whether the command can execute in its current state.

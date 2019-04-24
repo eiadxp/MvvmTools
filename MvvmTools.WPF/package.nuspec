@@ -4,7 +4,7 @@
     <!--*-->
     <id>ClinicalOffice.MvvmTools.WPF</id>
     <!--*-->
-    <version>1.1.1</version>
+    <version>1.2.0</version>
     <title>MvvmTools.WPF</title>
     <!--*-->
     <authors>Clinical Office</authors>
@@ -17,11 +17,15 @@
     <!--*-->
     <description>A library to enable direct binding of events in your views and methods in the view models, also provide easy way of creating commands and commands collection.</description>
     <!--*-->
-    <releaseNotes>Enhance default events editing</releaseNotes>
+    <releaseNotes>
+-Bug fix: WPF buttons does not catch command CanExecuteChanged.
+      
+-Added: changed event binding behaviour when using element name (you don't have to add DataContext to access underlaying ViewModel) PLEASE READ WIKI FOR THIS.
+    </releaseNotes>
     <copyright>Copyright ©  2019</copyright>
     <tags> MVVM Tools XAML WPF Xamarin Forms XamarinForms XForms Command Commands Collection CommandCollection CommandsCollection CrossPlatform Caliburn Catel MvvmCross MvvmLight Mvvm-Light EventsBinding Events</tags>
     <dependencies>
-      <dependency id="ClinicalOffice.MvvmTools" version="1.1.1" />
+      <dependency id="ClinicalOffice.MvvmTools" version="1.2.0" />
     </dependencies>
   </metadata>
 </package>
