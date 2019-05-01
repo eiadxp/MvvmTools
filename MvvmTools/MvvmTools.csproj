@@ -1,23 +1,26 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Authors>Clinical Office</Authors>
     <Company>Clinical Office</Company>
-    <Description>A library to enable direct binding of events in your views and methods in the view models, also provide easy way of creating commands and commands collection.</Description>
+    <Description>A library to enable direct binding of events in your views and methods in the view models, provide easy way of creating commands and commands collection, and also create data preview of your view models at design time.</Description>
     <Copyright>Clinical Office @2019</Copyright>
     <PackageTags>MVVM Tools XAML WPF Xamarin Forms XamarinForms XForms Command Commands Collection CommandCollection CommandsCollection CrossPlatform Caliburn Catel MvvmCross MvvmLight Mvvm-Light EventsBinding Events</PackageTags>
-    <PackageReleaseNotes>-Bug fix: WPF buttons does not catch command CanExecuteChanged.
--Added: changed event binding behaviour when using element name (you don't have to add DataContext to access underlaying ViewModel) PLEASE READ WIKI FOR THIS.</PackageReleaseNotes>
+    <PackageReleaseNotes>-Fixed: Events sometimes fail to bind to commands. 
+-Added: Design time check for the event binding text.
+-Added: Design time data preview!!
+-Added: Simple logging functionality.
+-Changed: Internal design to simplify implementing features through platforms.</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/eiadxp/MvvmTools</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/eiadxp/MvvmTools/blob/master/LICENSE</PackageLicenseUrl>
     <PackageId>ClinicalOffice.MvvmTools</PackageId>
-    <Version>1.2.0</Version>
+    <Version>1.3.0</Version>
     <Product>MvvmTools</Product>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
-    <AssemblyVersion>1.2.0.0</AssemblyVersion>
-    <FileVersion>1.2.0.0</FileVersion>
+    <AssemblyVersion>1.3.0.0</AssemblyVersion>
+    <FileVersion>1.3.0.0</FileVersion>
   </PropertyGroup>
 
 </Project>
