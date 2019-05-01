@@ -71,5 +71,7 @@ In your xamarin forms (also pay attention to `BindingContext="{tools:DesignInsta
 </ContentPage>
 ```
 
+![](https://github.com/eiadxp/MvvmTools/blob/master/images/Data%20preview%20xforms.png)
+
 ** PLEASE READ THE [WIKI](https://github.com/eiadxp/MvvmTools/wiki) FOR MORE INFORMATIONS **
 
