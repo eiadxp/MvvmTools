@@ -20,7 +20,7 @@ namespace MvvmTools.XForms
         public bool IsCreateList { get; set; }
         public int ItemsCount { get; set; } = 3;
         public int Depth { get; set; } = 2;
-        public RuntimeBehaviors RuntimBehavior { get; set; } = RuntimeBehaviors.OrignalValue;
+        public RuntimeBehaviors RuntimeBehavior { get; set; } = RuntimeBehaviors.OrignalValue;
 
         public object ProvideValue(IServiceProvider serviceProvider)
         {
@@ -36,7 +36,7 @@ namespace MvvmTools.XForms
                 }
             }
             if (Type == null) return null;
-            switch (RuntimBehavior)
+            switch (RuntimeBehavior)
             {
                 case RuntimeBehaviors.OrignalValue:
                     var valueProvider = serviceProvider?.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;

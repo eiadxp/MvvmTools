@@ -5,7 +5,7 @@
              xmlns:vm="clr-namespace:MvvmTools.Sample;assembly=MvvmTools.Sample"
              xmlns:tools="clr-namespace:MvvmTools.XForms;assembly=MvvmTools.XForms"
              x:Name="root"
-             BindingContext="{tools:DesignInstance Type=vm:ViewModel,RuntimBehavior=TypeCreate}"
+             BindingContext="{tools:DesignInstance Type=vm:ViewModel,RuntimeBehavior=TypeCreate}"
              x:Class="MvvmTools.Sample.XForms.MainPage">
     <StackLayout>
         <StackLayout Orientation="Horizontal">
