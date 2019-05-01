@@ -8,9 +8,10 @@ namespace MvvmTools
 {
     public static class Extensions
     {
-        internal static void LogWrite(this object obj, object message)
+        internal static void LogWrite(this object obj, object message, string category = null)
         {
             // To be added later for logging.
+            Configurations.Logging.Write(obj, message, category);
         }
 
         static string TryGetName<T>(Expression<Func<T, bool>> expression)

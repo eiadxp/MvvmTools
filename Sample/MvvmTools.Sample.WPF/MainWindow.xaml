@@ -6,11 +6,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MvvmTools.Sample.WPF"
         xmlns:tools="clr-namespace:MvvmTools.WPF;assembly=MvvmTools.WPF"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        xmlns:vm="clr-namespace:MvvmTools.Sample;assembly=MvvmTools.Sample"
+        mc:Ignorable="d" d:DataContext="{tools:DesignInstance Type=vm:ViewModel,Depth=3}"
+        Title="MainWindow" d:DesignHeight="200">
     <StackPanel>
         <ToolBar>
+            <Button Content="Load Data" tools:Events.Bindings="LoadData"/>
+            <Separator/>
             <Button Content="Show Count" tools:Events.Bindings="ShowModelsCount"/>
+            <Separator/>
             <Button Content="Show Count (from command)" tools:Events.Bindings="ShowModelsCountCommand"/>
         </ToolBar>
         <ListBox x:Name="list" ItemsSource="{Binding Models}">
@@ -18,7 +22,7 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding Name}" Width="200" Margin="10"/>
-                        <Button Content="Show id" tools:Events.Bindings="!root.DataContext.ShowModelId(!context)" Margin="10"/>
+                        <Button Content="Show id" tools:Events.Bindings="?!root.DataContext.ShowModelId(!context)" Margin="10"/>
                         <Button Content="Show Name" tools:Events.Bindings="!root.DataContext.ShowModelName(Model !context)" Margin="10"/>
                         <Button Content="Show Name" tools:Events.Bindings="!root.DataContext.ShowModelName(Int32 !context.Id)" Margin="10"/>
                         <Button Content="Show id (from command)" tools:Events.Bindings="!root.DataContext.ShowModelIdCommand(!context)" Margin="10"/>

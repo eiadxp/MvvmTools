@@ -28,16 +28,17 @@ namespace MvvmTools
             }
             return null;
         }
-        public static void ExecuteCommandOrMethod(object source, string name)
+        public static void ExecuteCommandOrMethod(object source, string name, bool ignorExecute = false)
         {
             source = source ?? throw new NullReferenceException("Method source can not be null.");
-            if (!ExecuteCommand(source, name)) ExecuteMethod(source, name);
+            if (!ExecuteCommand(source, name, ignorExecute)) ExecuteMethod(source, name, ignorExecute);
         }
-        public static void ExecuteCommandOrMethod(object source, string name, object parameter, Type parameterType = null)
+        public static void ExecuteCommandOrMethod(object source, string name, object parameter, Type parameterType = null, bool ignorExecute = false)
         {
             source = source ?? throw new NullReferenceException("Method source can not be null.");
-            if (!ExecuteCommand(source, name, parameter)) ExecuteMethod(source, name, parameter, parameterType);
+            if (!ExecuteCommand(source, name, parameter, ignorExecute)) ExecuteMethod(source, name, parameter, parameterType, ignorExecute);
         }
+        public static bool HasMethodOrCommand(Type type, string name) => HasMethod(type, name) || HasCommand(type, name);
         #region Events
         static Dictionary<Type, EventInfo[]> _Events = new Dictionary<Type, EventInfo[]>();
         static Dictionary<Type, EventInfo> _DefaultEvent = new Dictionary<Type, EventInfo>();
@@ -123,20 +124,20 @@ namespace MvvmTools
         public static MethodInfo[] GetMethods(Type type) => _Methods.GetValue(type, () => type.GetMethods());
         public static bool HasMethod(Type type, string methodName) => _Methods.GetValue(type, () => type.GetMethods()).Any(m => m.Name == methodName);
         public static ParameterInfo[] GetMethodParameters(MethodInfo method) => _MethodParameters.GetValue(method, () => method.GetParameters());
-        public static void ExecuteMethod(object methodSource, string methodName)
+        public static void ExecuteMethod(object methodSource, string methodName, bool ignorExecute = false)
         {
             methodSource = methodSource?? throw new NullReferenceException("Method source can not be null.");
             var action = ReflectionCash.GetDelegateWithoutParameter(methodSource.GetType(), methodName) ??
                 throw new InvalidOperationException($"Can not find method {methodName} in object of type {methodSource.GetType()}.");
-            action(methodSource);
+            if (!ignorExecute) action(methodSource);
         }
-        public static void ExecuteMethod(object methodSource, string methodName, object parameter, Type parameterType = null)
+        public static void ExecuteMethod(object methodSource, string methodName, object parameter, Type parameterType = null, bool ignorExecute = false)
         {
             methodSource = methodSource?? throw new NullReferenceException("Method source can not be null.");
             parameterType = parameterType ?? parameter?.GetType() ?? typeof(object);
             var action = ReflectionCash.GetDelegateWithParameter(methodSource.GetType(), methodName, parameterType) ??
                 throw new InvalidOperationException($"Can not find method {methodName} in object of type {methodSource.GetType()}.");
-            action(methodSource, parameter);
+            if (!ignorExecute) action(methodSource, parameter);
         }
         #endregion
         #region Parameterless Method Delegate
@@ -200,7 +201,7 @@ namespace MvvmTools
         #endregion
         #region Properties
         static Dictionary<Type, PropertyInfo[]> _Properties = new Dictionary<Type, PropertyInfo[]>();
-        static PropertyInfo[] GetProperties(Type type) => _Properties.GetValue(type, () => type.GetProperties());
+        public static PropertyInfo[] GetProperties(Type type) => _Properties.GetValue(type, () => type.GetProperties());
         public static object GetPropertyValue(object obj, string propertyName)
         {
             if (obj == null) throw new ArgumentNullException(nameof(obj));
@@ -212,29 +213,32 @@ namespace MvvmTools
         #endregion
         #region Commands
         static Dictionary<Type, PropertyInfo[]> _Commands = new Dictionary<Type, PropertyInfo[]>();
-        static PropertyInfo GetCommandProperty(object commandSource, string commandName)
+        static PropertyInfo GetCommandProperty(Type commandSource, string commandName)
         {
-            var commands = _Commands.GetValue(commandSource.GetType(), 
-                                               () => GetProperties(commandSource.GetType()).Where
+            var commands = _Commands.GetValue(commandSource, 
+                                               () => GetProperties(commandSource).Where
                                                         (p => p.PropertyType.IsAssignableFrom(typeof(ICommand))).ToArray());
             return commands.FirstOrDefault(p => p.Name == commandName);
         }
-        static bool ExecuteCommand(object commandSource, string commandName)
+        static bool ExecuteCommand(object commandSource, string commandName, bool ignorExecute = false)
         {
-            var p = GetCommandProperty(commandSource, commandName);
+            var p = GetCommandProperty(commandSource.GetType(), commandName);
             if (p == null) return false;
             var command = GetPropertyValue(commandSource, commandName) as ICommand;
+            if (ignorExecute) return true;
             if (command.CanExecute(null)) command.Execute(null);
             return true;
         }
-        static bool ExecuteCommand(object commandSource, string commandName, object parameter)
+        static bool ExecuteCommand(object commandSource, string commandName, object parameter, bool ignorExecute = false)
         {
-            var p = GetCommandProperty(commandSource, commandName);
+            var p = GetCommandProperty(commandSource.GetType(), commandName);
             if (p == null) return false;
             var command = GetPropertyValue(commandSource, commandName) as ICommand;
+            if (ignorExecute) return true;
             if (command.CanExecute(parameter)) command.Execute(parameter);
             return true;
         }
+        public static bool HasCommand(Type type, string name) => GetCommandProperty(type, name) != null;
         #endregion
     }
 }

@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 
 namespace MvvmTools.EventBinding
 {
-    public class EventBinding<TValueProvider> where TValueProvider : ValueProviderBase, new()
+    public class EventBinding<TPlatform> where TPlatform : PlatformBase, new()
     {
         #region Constructors
         public EventBinding()
@@ -34,32 +34,36 @@ namespace MvvmTools.EventBinding
         /// Some properties like <see cref="EventSrting"/> and <see cref="EventSource"/> should not be changed if the current instance
         /// is already subscribed to an event.
         /// </remarks>
-        T SetIfNotSubscribed<T>(T value, [CallerMemberName] string property = "")
+        void SetIfNotSubscribed<T>(T value, ref T field, [CallerMemberName] string property = "")
         {
+            if (object.Equals(field, value)) return;
             if (IsSubscribed)
             {
-                this.LogWrite("SetIfNotSubscribed failed.");
-                throw new InvalidOperationException($"Can not change property '{property}' while you are subscribed to the event./nPlease remove the event handler first.");
+                this.LogWrite("Changing properties after event subscribed.");
+                UnsubscribeFromEvent();
+                field = value;
+                SubscribeToEvent();
             }
-
-            this.LogWrite("SetIfNotSubscribed passed.");
-            return value;
+            else
+            {
+                field = value;
+            }
         }
         #endregion
         #region Properties fields
         private string _eventString;
         private object _eventSource;
-        private readonly MethodParser<TValueProvider> _method = new MethodParser<TValueProvider>();
+        private readonly MethodParser<TPlatform> _method = new MethodParser<TPlatform>();
         #endregion
         #region Properties
-        public string EventSrting { get => _eventString; set => _eventString = SetIfNotSubscribed(value); }
-        public object EventSource { get => _eventSource; set => _eventSource = SetIfNotSubscribed(value); }
+        public string EventSrting { get => _eventString; set => SetIfNotSubscribed(value, ref _eventString); }
+        public object EventSource { get => _eventSource; set => SetIfNotSubscribed(value, ref _eventSource); }
         public bool IsSubscribed { get; private set; }
 
         public Delegate Handler { get; private set; }
         #endregion
         #region Handlers
-        public static Delegate CreateEventHandler(Type eventHandlerType, EventBinding<TValueProvider> binding)
+        public static Delegate CreateEventHandler(Type eventHandlerType, EventBinding<TPlatform> binding)
         {
             var handlerParameters = ReflectionCash.GetHandlerParameter(eventHandlerType).Select(p => Expression.Parameter(p.ParameterType)).ToList();
             Expression methodSender = handlerParameters[0];
@@ -69,9 +73,10 @@ namespace MvvmTools.EventBinding
             return handler;
         }
 
-        static readonly MethodInfo EventHandlerInfo = typeof(EventBinding<TValueProvider>).GetMethod(nameof(EventHandler), BindingFlags.Static | BindingFlags.NonPublic);
-        static void EventHandler(EventBinding<TValueProvider> binding, object sender, object args)
+        static readonly MethodInfo EventHandlerInfo = typeof(EventBinding<TPlatform>).GetMethod(nameof(EventHandler), BindingFlags.Static | BindingFlags.NonPublic);
+        static void EventHandler(EventBinding<TPlatform> binding, object sender, object args)
         {
+            binding.LogWrite("Event handler has been invoked.");
             binding._method.ExecuteFromEvent(sender, args);
         }
         #endregion
@@ -85,19 +90,16 @@ namespace MvvmTools.EventBinding
                 this.LogWrite($"'{nameof(SubscribeToEvent)}' canceled (already subscribed).");
                 return false;
             }
-
             if (string.IsNullOrWhiteSpace(EventSrting))
             {
                 this.LogWrite($"'{nameof(SubscribeToEvent)}' canceled (Empty event string).");
                 return false;
             }
-
             if (EventSource == null)
             {
                 this.LogWrite($"'{nameof(SubscribeToEvent)}' canceled (Null event source).");
                 return false;
             }
-
             var i = EventSrting.IndexOf('=');
             var eventName = (i > 0) ? EventSrting.Substring(0, i).Trim() : "";
             subscribedEvent = ReflectionCash.GetEventOrDefault(EventSource.GetType(), eventName) ?? throw new InvalidOperationException("Can not find event.");
@@ -109,7 +111,7 @@ namespace MvvmTools.EventBinding
             this.LogWrite($"'{nameof(SubscribeToEvent)}' passed.");
             return true;
         }
-        internal bool UnubscribeFromEvent()
+        internal bool UnsubscribeFromEvent()
         {
             if (Handler == null || !IsSubscribed || subscribedEvent == null || subscribedDelegate == null) return false;
             if (string.IsNullOrWhiteSpace(EventSrting)) return false;
@@ -118,6 +120,10 @@ namespace MvvmTools.EventBinding
             subscribedEvent = null;
             IsSubscribed = false;
             return true;
+        }
+        internal void Validate()
+        {
+            if (IsSubscribed) _method.ExecuteFromEvent(EventSource, EventArgs.Empty, true);
         }
     }
 }

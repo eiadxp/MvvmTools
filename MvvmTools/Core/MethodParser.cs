@@ -2,7 +2,7 @@
 
 namespace MvvmTools.Core
 {
-    class MethodParser<TValueProvider> where TValueProvider : ValueProviderBase, new()
+    class MethodParser<TPlatform> where TPlatform : PlatformBase, new()
     {
         T ValueChanged<T>(T value)
         {
@@ -11,8 +11,9 @@ namespace MvvmTools.Core
             _methodName = "";
             return value;
         }
-        TValueProvider _parameter = null;
-        TValueProvider _methodSource = null;
+        ValueProvider<TPlatform> _parameter = null;
+        ValueProvider<TPlatform> _methodSource = null;
+        TPlatform _platform = new TPlatform();
         // _methodName may refer also to a property of type ICommand.
         string _methodName = "";
         Type _parameterType = null;
@@ -22,36 +23,36 @@ namespace MvvmTools.Core
         public object UIElement { get => _uIElement; set => _uIElement = ValueChanged(value); }
         public string Text { get => _text; set => _text = ValueChanged(value); }
 
-        public void ExecuteFromEvent(object sender, object args)
+        public void ExecuteFromEvent(object sender, object args, bool ignorExecute = false)
         {
             var source = GetMethodObject(sender, args);
             if (source == null) return;
-            if (!ReflectionCash.HasMethod(source.GetType(), _methodName))
-                source = _methodSource.GetContext(source);
+            if (!ReflectionCash.HasMethodOrCommand(source.GetType(), _methodName))
+                source = _platform.GetContext(source);
             if (_parameter == null)
             {
-                ReflectionCash.ExecuteCommandOrMethod(source, _methodName);
+                ReflectionCash.ExecuteCommandOrMethod(source, _methodName, ignorExecute);
             }
             else
             {
                 var parameter = _parameter.GetValueFromEvent(sender, args);
-                ReflectionCash.ExecuteCommandOrMethod(source, _methodName, parameter, _parameterType);
+                ReflectionCash.ExecuteCommandOrMethod(source, _methodName, parameter, _parameterType, ignorExecute);
             }
         }
-        public void ExecuteFromCommand(object commandParameter)
+        public void ExecuteFromCommand(object commandParameter, bool ignorExecute = false)
         {
             var source = GetMethodObject(commandParameter);
             if (source == null) return;
             if (!ReflectionCash.HasMethod(source.GetType(), _methodName))
-                source = _methodSource.GetContext(source);
+                source = _platform.GetContext(source);
             if (_parameter == null)
             {
-                ReflectionCash.ExecuteMethod(source, _methodName);
+                ReflectionCash.ExecuteMethod(source, _methodName, ignorExecute);
             }
             else
             {
                 var parameter = _parameter.GetValueFromCommand(commandParameter);
-                ReflectionCash.ExecuteMethod(source, _methodName, parameter, _parameterType);
+                ReflectionCash.ExecuteMethod(source, _methodName, parameter, _parameterType, ignorExecute);
             }
         }
         public object GetMethodObject(object sender, object args)
@@ -84,7 +85,7 @@ namespace MvvmTools.Core
             {
                 s = Text.Trim();
             }
-            _methodSource = new TValueProvider();
+            _methodSource = new ValueProvider<TPlatform>();
             _methodSource.UIElement = UIElement;
             _methodSource.Path = s.Substring(0, i);
             _methodName = s.Substring(i + 1); //Method name may be METHOD or METHOD() or METHOD(PARAMETER) or METHOD(TYPE PARAMETER)
@@ -110,7 +111,7 @@ namespace MvvmTools.Core
             }
             if (!string.IsNullOrWhiteSpace(s))
             {
-                _parameter = new TValueProvider();
+                _parameter = new ValueProvider<TPlatform>();
                 _parameter.UIElement = UIElement;
                 _parameter.Path = s;
             }

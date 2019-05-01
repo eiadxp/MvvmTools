@@ -45,37 +45,12 @@ namespace MvvmTools.Core
     /// </para>
     /// </para>
     /// </remarks>
-    public abstract class ValueProviderBase
+    public sealed class ValueProvider<TPlatform> where TPlatform : PlatformBase, new()
     {
+        private TPlatform platform = new TPlatform();
         private string _path;
         private string[] _pathItems;
 
-        /// <summary>
-        /// Get user UI element by name.
-        /// </summary>
-        /// <param name="name">Name of UI element</param>
-        /// <returns>Reference to UI element if found, or null if not.</returns>
-        /// <remarks>
-        /// Searches for UI element by name is done usually by using <see cref="UIElement"/>, but in some cases this methods is called 
-        /// before defining <see cref="UIElement"/>, or before attaching it to the UI parent, in that case it must return null.
-        /// </remarks>
-        internal protected abstract object GetElement(string name);
-        /// <summary>
-        /// Get a resource by key.
-        /// </summary>
-        /// <param name="Key">Key of the resource.</param>
-        /// <returns>Resource if found, or null if not.</returns>
-        /// <remarks>
-        /// Searches for UI resources by key is done usually by using <see cref="UIElement"/>, but in some cases this methods is called 
-        /// before defining <see cref="UIElement"/>, or before attaching it to the UI parent, in that case it must return null.
-        /// </remarks>
-        internal protected abstract object GetResource(string Key);
-        /// <summary>
-        /// Gets the data (or binding) context of th <see cref="UIElement"/>.
-        /// </summary>
-        /// <returns>The data (or binding) context of <see cref="UIElement"/> if it is set, other wise it will returns null.</returns>
-        /// <remarks>If <see cref="UIElement"/> is null, this method should return null.</remarks>
-        internal protected abstract object GetContext(object element);
 
         /// <summary>
         /// UI element to be used with this object.
@@ -127,7 +102,7 @@ namespace MvvmTools.Core
                 case "!context":
                 case "!datacontext":
                 case "!bindingcontext":
-                    dataObject = GetContext(UIElement);
+                    dataObject = platform.GetContext(UIElement);
                     break;
                 case "@this":
                 case "!this":
@@ -136,29 +111,29 @@ namespace MvvmTools.Core
                 default:
                     if (_pathItems[0].StartsWith("$"))
                     {
-                        dataObject = GetElement(_pathItems[0].Substring(1));
+                        dataObject = platform.GetElement(UIElement, _pathItems[0].Substring(1));
                         isElementName = true;
                     }
                     else if (_pathItems[0].StartsWith("#"))
                     {
-                        dataObject = GetResource(_pathItems[0].Substring(1));
+                        dataObject = platform.GetResource(UIElement, _pathItems[0].Substring(1));
                     }
                     else if (_pathItems[0].StartsWith("!"))
                     {
                         try
                         {
-                            dataObject = GetElement(_pathItems[0].Substring(1));
+                            dataObject = platform.GetElement(UIElement, _pathItems[0].Substring(1));
                             isElementName = dataObject!= null;
                         }
                         catch (Exception)
                         {
                             dataObject = null;
                         }
-                        if (dataObject == null) dataObject = GetResource(_pathItems[0].Substring(1));
+                        if (dataObject == null) dataObject = platform.GetResource(UIElement, _pathItems[0].Substring(1));
                     }
                     else
                     {
-                        dataObject = GetContext(UIElement);
+                        dataObject = platform.GetContext(UIElement);
                         startIndex = 0;
                     }
 
@@ -176,7 +151,7 @@ namespace MvvmTools.Core
                 {
                     if (isElementName)
                     {
-                        dataObject = GetContext(dataObject);
+                        dataObject = platform.GetContext(dataObject);
                         isElementName = false;
                         dataObject = ReflectionCash.GetPropertyValue(dataObject, _pathItems[i]);
                     }

@@ -10,7 +10,6 @@ namespace MvvmTools.Sample.XForms
         public App()
         {
             InitializeComponent();
-
             MainPage = new MainPage();
             ViewModel.ShowMessage = (o) => MainPage.DisplayAlert("Mvvm Tools", (o?.ToString()) ?? "Empty message", "Close");
         }

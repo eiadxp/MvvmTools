@@ -5,6 +5,10 @@ using System.Globalization;
 
 namespace MvvmTools.EventBinding
 {
+    /// <summary>
+    /// A converter used to convert a string into a collection of <see cref="EventBinding{TValueProvider}"/>.
+    /// </summary>
+    /// <typeparam name="TEventBindingCollection"></typeparam>
     public class EventBindingCollectionConverterBase<TEventBindingCollection> : TypeConverter
         where TEventBindingCollection : IAddFromString, new()
     {

@@ -7,17 +7,33 @@ using Xamarin.Forms.Internals;
 
 namespace MvvmTools.XForms
 {
-    public class ValueProvider : ValueProviderBase
+    public class PlatformXForms : PlatformBase
     {
+        protected override void Initialize()
+        {
+            base.Initialize();
+            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(Button), nameof(Button.Clicked));
+            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(WebView), nameof(WebView.Navigated));
+            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(SearchBar), nameof(SearchBar.SearchButtonPressed));
+            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(Slider), nameof(Slider.ValueChanged));
+            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(Stepper), nameof(Stepper.ValueChanged));
+            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(Switch), nameof(Switch.Toggled));
+            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(DatePicker), nameof(DatePicker.DateSelected));
+            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(TimePicker), nameof(TimePicker.PropertyChanged));
+            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(Entry), nameof(Entry.Completed));
+            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(Editor), nameof(Editor.Completed));
+            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(ListView), nameof(ListView.ItemSelected));
+            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(Picker), nameof(Picker.SelectedIndexChanged));
+        }
         protected override object GetContext(object element)
         {
-            var bindable = (UIElement as BindableObject) ?? throw new InvalidOperationException("Must be used on BindableObject");
+            var bindable = (element as BindableObject) ?? throw new InvalidOperationException("Must be used on BindableObject");
             return bindable.BindingContext;
         }
-        protected override object GetElement(string name)
+        protected override object GetElement(object element, string name)
         {
-            var element = (UIElement as Element) ?? throw new InvalidOperationException("Must be used on Element");
-            return FindByName(name, element);
+            var uiElement = (element as Element) ?? throw new InvalidOperationException("Must be used on Element");
+            return FindByName(name, uiElement);
         }
         object FindByName(string name, Element element)
         {
@@ -36,10 +52,10 @@ namespace MvvmTools.XForms
         }
 
 
-        protected override object GetResource(string name)
+        protected override object GetResource(object element, string name)
         {
-            var element = (UIElement as VisualElement) ?? throw new InvalidOperationException("Must be used on Element");
-            return GetResource(element, name);
+            var uiElement = (element as VisualElement) ?? throw new InvalidOperationException("Must be used on Element");
+            return GetResource(uiElement, name);
         }
         object GetResource(VisualElement element, string key)
         {
@@ -53,31 +69,11 @@ namespace MvvmTools.XForms
             if (element.Resources != null && element.Resources.TryGetValue(key, out object value)) return value;
             return GetResource(element.Parent as VisualElement, key);
         }
+        protected override bool IsDesignMode => DesignMode.IsDesignModeEnabled;
     }
     [TypeConverter(typeof(EventBindingsCollectionConverter))]
-    public class EventBindingsCollection : EventBindingCollectionBase<ValueProvider>
-    {
-        protected override void Initialize()
-        {
-            base.Initialize();
-            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(Button), nameof(Button.Clicked));
-            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(WebView), nameof(WebView.Navigated));
-            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(SearchBar), nameof(SearchBar.SearchButtonPressed));
-            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(Slider), nameof(Slider.ValueChanged));
-            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(Stepper), nameof(Stepper.ValueChanged));
-            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(Switch), nameof(Switch.Toggled));
-            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(DatePicker), nameof(DatePicker.DateSelected));
-            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(TimePicker), nameof(TimePicker.PropertyChanged));
-            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(Entry), nameof(Entry.Completed));
-            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(Editor), nameof(Editor.Completed));
-            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(ListView), nameof(ListView.ItemSelected));
-            Configurations.Reflaction.SetDefaultEventIfNotExist(typeof(Picker), nameof(Picker.SelectedIndexChanged));
-        }
-    }
-    public class EventBindingsCollectionConverter : EventBindingCollectionConverterBase<EventBindingsCollection>
-    {
-
-    }
+    public class EventBindingsCollection : EventBindingCollectionBase<PlatformXForms> { }
+    public class EventBindingsCollectionConverter : EventBindingCollectionConverterBase<EventBindingsCollection> { }
     public static class Events
     {
         public static EventBindingsCollection GetBindings(BindableObject obj) => (EventBindingsCollection)obj.GetValue(BindingsProperty);

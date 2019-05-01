@@ -5,16 +5,15 @@
              xmlns:vm="clr-namespace:MvvmTools.Sample;assembly=MvvmTools.Sample"
              xmlns:tools="clr-namespace:MvvmTools.XForms;assembly=MvvmTools.XForms"
              x:Name="root"
+             BindingContext="{tools:DesignInstance Type=vm:ViewModel,RuntimBehavior=TypeCreate}"
              x:Class="MvvmTools.Sample.XForms.MainPage">
-    <ContentPage.BindingContext>
-        <vm:ViewModel/>
-    </ContentPage.BindingContext>
     <StackLayout>
         <StackLayout Orientation="Horizontal">
+            <Button Text="Load Data" tools:Events.Bindings="LoadData"/>
             <Button Text="Show Count" tools:Events.Bindings="ShowModelsCount"/>
             <Button Text="Show Count (from command)" tools:Events.Bindings="ShowModelsCountCommand"/>
         </StackLayout>
-        <ListView ItemsSource="{Binding Models}">
+        <ListView ItemsSource="{Binding Models,Mode=TwoWay}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>

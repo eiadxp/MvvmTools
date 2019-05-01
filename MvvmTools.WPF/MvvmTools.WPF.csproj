@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="CommandsCollection.cs" />
     <Compile Include="CommandSource.cs" />
+    <Compile Include="DesignInstance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
