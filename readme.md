@@ -10,7 +10,7 @@ A tiny library to help cross-platform MVVM developer to be more productive by ad
 
 # 1.Shared Library:
 To be installed on any .NET Standard 2.0 compatible project, usually where you define your view models.
-The main usage for this library is to help developer in creating commands in an easy way for the view models. It has also some basic classes to be used in the platform specified libraries (like command collection and basic implementation of event binding).
+The main usage for this library is to help developer in **creating commands** in an easy way for the view models. It has also some basic classes to be used in the platform specified libraries (like command collection and basic implementation of event binding).
 You can create commands in a simple way:
 ```C#
 using System;
@@ -35,7 +35,7 @@ namespace Sample
 ```
 
 # 2.Platform Specific Library:
-The first part of this library enables direct binding between events in your views and methods in the view models directly from XAML code Like:
+The first part of this library enables direct **binding between events in your views and methods in the view models** directly from XAML code Like:
 ```XAML
 <TextBox tools:Events.Bindings="LostFocus=Validate,GotFocus=Clear"/>
 ```
@@ -50,7 +50,7 @@ You can also use commands in the same way as methods and bind them to any event:
 <TextBox tools:Events.Bindings="LostFocus=ValidateCommand(!context),GotFocus=ClearCommand(!sender)"/>
 ```
 
-The Second part will enable a quick preview of you view models and its data inside your designer to give a better way of previewing your interface at design time. You can write the following in your WPF application (the magic happens in the line `d:DataContext="{tools:DesignInstance Type=vm:ViewModel}"`):
+The Second part will enable a **quick preview of you view models and its data inside your designer** to give a better way of previewing your interface at design time. You can write the following in your WPF application (the magic happens in the line `d:DataContext="{tools:DesignInstance Type=vm:ViewModel}"`):
 ```XAML
 <Window x:Class="MvvmTools.Sample.WPF.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
