@@ -1,3 +1,11 @@
+# Installation:
+
+|Package    |Nuget   |
+|--- |---|
+|ClinicalOffice |[![Nuget](https://img.shields.io/nuget/v/ClinicalOffice.MvvmTools.svg)](https://www.nuget.org/packages/ClinicalOffice.MvvmTools/)|
+|ClinicalOffice.WPF |[![Nuget](https://img.shields.io/nuget/v/ClinicalOffice.MvvmTools.WPF.svg)](https://www.nuget.org/packages/ClinicalOffice.MvvmTools.WPF/)|
+|ClinicalOffice.XForms |[![Nuget](https://img.shields.io/nuget/v/ClinicalOffice.MvvmTools.XForms.svg)](https://www.nuget.org/packages/ClinicalOffice.MvvmTools.XForms/)|
+
 A tiny library to help cross-platform MVVM developer to be more productive by adding some shared and platform specific features:
 
 # 1.Shared Library:
